@@ -5,36 +5,45 @@ import * as yup from 'yup';
 import { Car, Utensils, Zap, Trash2, ShoppingBag, ChevronRight, ChevronLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+// Helpers to coerce empty inputs
+const toZero = (schema) =>
+  schema.transform((value, originalValue) => (originalValue === '' || originalValue == null ? 0 : value));
+
+const toNull = (schema) =>
+  schema
+    .transform((value, originalValue) => (originalValue === '' || originalValue == null ? null : value))
+    .nullable();
+
 const schema = yup.object({
   // Transport
-  commute_km: yup.number().min(0, 'Distance cannot be negative').max(1000, 'Distance seems too high').required('Commute distance is required'),
+  commute_km: toZero(yup.number()).min(0, 'Distance cannot be negative').max(1000, 'Distance seems too high').required('Commute distance is required'),
   transport_mode: yup.string().required('Transport mode is required'),
   
   // Food (kg per week)
-  beef_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
-  chicken_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
-  pork_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
-  fish_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
-  dairy_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
-  vegetables_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
-  fruits_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  beef_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  chicken_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  pork_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  fish_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  dairy_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  vegetables_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  fruits_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
   
   // Energy
-  electricity_kwh: yup.number().min(0, 'Usage cannot be negative').max(10000, 'Usage seems too high').required('Electricity usage is required'),
-  natural_gas_kwh: yup.number().min(0, 'Usage cannot be negative').max(10000, 'Usage seems too high'),
+  electricity_kwh: toZero(yup.number()).min(0, 'Usage cannot be negative').max(10000, 'Usage seems too high').required('Electricity usage is required'),
+  natural_gas_kwh: toZero(yup.number()).min(0, 'Usage cannot be negative').max(10000, 'Usage seems too high'),
   
   // Waste
-  waste_kg: yup.number().min(0, 'Amount cannot be negative').max(100, 'Amount seems too high').required('Waste amount is required'),
-  recycled_kg: yup.number().min(0, 'Amount cannot be negative').max(100, 'Amount seems too high'),
+  waste_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(100, 'Amount seems too high').required('Waste amount is required'),
+  recycled_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(100, 'Amount seems too high'),
   
   // Consumption
-  clothing_kg: yup.number().min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
-  electronics_items: yup.number().min(0, 'Amount cannot be negative').max(20, 'Amount seems too high'),
+  clothing_kg: toZero(yup.number()).min(0, 'Amount cannot be negative').max(50, 'Amount seems too high'),
+  electronics_items: toZero(yup.number()).min(0, 'Amount cannot be negative').max(20, 'Amount seems too high'),
   
   // Optional ML features
-  house_size: yup.number().min(0, 'Size cannot be negative').max(10000, 'Size seems too large'),
-  occupants: yup.number().min(1, 'Must have at least 1 occupant').max(20, 'Too many occupants'),
-  ac_hours: yup.number().min(0, 'Hours cannot be negative').max(24, 'Hours cannot exceed 24'),
+  house_size: toNull(yup.number().min(0, 'Size cannot be negative').max(10000, 'Size seems too large')),
+  occupants: toNull(yup.number().min(1, 'Must have at least 1 occupant').max(20, 'Too many occupants')),
+  ac_hours: toNull(yup.number().min(0, 'Hours cannot be negative').max(24, 'Hours cannot exceed 24')),
 });
 
 const InputForm = ({ onSubmit, loading }) => {
@@ -227,7 +236,7 @@ const InputForm = ({ onSubmit, loading }) => {
                   type="number"
                   className="input-field"
                   min="0"
-                  step="1"
+                  step="0.1"
                   placeholder="e.g., 300"
                 />
                 {errors.electricity_kwh && (
@@ -243,7 +252,7 @@ const InputForm = ({ onSubmit, loading }) => {
                   type="number"
                   className="input-field"
                   min="0"
-                  step="1"
+                  step="0.1"
                   placeholder="e.g., 150"
                 />
                 {errors.natural_gas_kwh && (

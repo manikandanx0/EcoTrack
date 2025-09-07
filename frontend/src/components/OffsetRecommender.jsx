@@ -89,7 +89,7 @@ const OffsetRecommender = ({ footprint }) => {
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Offset Purchase Successful!</h3>
           <p className="text-gray-600 mb-6">
-            You've successfully offset {footprint.toFixed(1)} kg of CO₂ emissions through the{' '}
+            You've successfully offset {(typeof footprint === 'number' ? footprint.toFixed(1) : footprint)} kg of CO₂ emissions through the{' '}
             <strong>{selectedProject.project_name}</strong> project.
           </p>
           
@@ -135,7 +135,7 @@ const OffsetRecommender = ({ footprint }) => {
 
       <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p className="text-blue-800 text-sm">
-          <strong>Offset your {footprint.toFixed(1)} kg CO₂ footprint</strong> by supporting verified 
+          <strong>Offset your {(typeof footprint === 'number' ? footprint.toFixed(1) : footprint)} kg CO₂ footprint</strong> by supporting verified 
           carbon reduction projects. Each project is blockchain-verified and provides transparent 
           impact tracking.
         </p>

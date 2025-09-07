@@ -88,7 +88,7 @@ const AppContent = () => {
                       loading={loading}
                     />
                     
-                    {footprintData && (
+                    {footprintData && footprintData.baseline && footprintData.baseline.breakdown && (
                       <div className="mt-8 space-y-6">
                         <Dashboard data={footprintData} />
                         <Suggestions breakdown={footprintData.baseline.breakdown} />

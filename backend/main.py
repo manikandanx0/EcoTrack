@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import select, desc
@@ -24,6 +24,7 @@ from schemas import (
     InputPayload, 
     CalculationResponse, 
     OffsetResponse, 
+    OffsetRequest,
     OffsetRecommendation,
     EntryResponse,
     UserResponse,
@@ -153,7 +154,7 @@ async def health_check():
 @app.post("/api/calc", response_model=CalculationResponse)
 @limiter.limit("10/minute")
 async def calculate_footprint(
-    request,
+    request: Request,
     payload: InputPayload,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -383,13 +384,14 @@ async def refine_footprint(
 
 @app.post("/api/offset", response_model=OffsetResponse)
 async def get_offset_recommendations(
-    footprint_kg: float,
+    request: OffsetRequest,
     db: Session = Depends(get_db)
 ):
     """
     Get carbon offset recommendations (mocked blockchain integration)
     """
     try:
+        footprint_kg = request.footprint_kg
         if footprint_kg <= 0:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -635,10 +637,18 @@ async def get_suggestions(
 ):
     """Get personalized carbon reduction suggestions"""
     try:
-        # Load suggestion rules
+        # Load suggestion rules (safe fallback if missing)
         rules_path = Path(__file__).parent.parent / "shared" / "suggestion_rules.json"
-        with open(rules_path, 'r') as f:
-            rules = json.load(f)
+        if rules_path.exists():
+            with open(rules_path, 'r') as f:
+                rules = json.load(f)
+        else:
+            # Minimal defaults if rules file is not present
+            rules = {
+                "energy": {"threshold": 0.25, "tips": [{"tip": "Improve home insulation and switch to LEDs", "savings": 15.0, "impact_level": "high"}]},
+                "transport": {"threshold": 0.3, "tips": [{"tip": "Carpool or use public transport twice a week", "savings": 12.0, "impact_level": "medium"}]},
+                "food": {"threshold": 0.2, "tips": [{"tip": "Try one vegetarian day per week", "savings": 8.0, "impact_level": "low"}]}
+            }
         
         suggestions = []
         total_potential_savings = 0

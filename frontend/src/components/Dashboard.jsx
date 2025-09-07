@@ -6,6 +6,27 @@ import jsPDF from 'jspdf';
 const Dashboard = ({ data }) => {
   const { baseline, refined } = data;
 
+  // Category metadata defined before use
+  const categoryColors = {
+    transport: '#3B82F6',
+    food: '#EF4444',
+    energy: '#F59E0B',
+    waste: '#8B5CF6',
+    consumption: '#10B981'
+  };
+
+  const categoryIcons = {
+    transport: Car,
+    food: Utensils,
+    energy: Zap,
+    waste: Trash2,
+    consumption: ShoppingBag
+  };
+
+  function getCategoryColor(category) {
+    return categoryColors[category] || '#6B7280';
+  }
+
   // Prepare data for pie chart
   const pieData = Object.entries(baseline.breakdown).map(([category, value]) => ({
     name: category.charAt(0).toUpperCase() + category.slice(1),
@@ -20,25 +41,7 @@ const Dashboard = ({ data }) => {
     refined: refined ? Math.abs(refined.breakdown[category] || 0) : 0
   }));
 
-  const categoryIcons = {
-    transport: Car,
-    food: Utensils,
-    energy: Zap,
-    waste: Trash2,
-    consumption: ShoppingBag
-  };
-
-  const categoryColors = {
-    transport: '#3B82F6',
-    food: '#EF4444',
-    energy: '#F59E0B',
-    waste: '#8B5CF6',
-    consumption: '#10B981'
-  };
-
-  function getCategoryColor(category) {
-    return categoryColors[category] || '#6B7280';
-  }
+  
 
   const totalBaseline = baseline.baseline_total;
   const totalRefined = refined ? refined.refined_total : null;
@@ -226,7 +229,7 @@ const Dashboard = ({ data }) => {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Detailed Breakdown</h3>
         <div className="space-y-4">
           {Object.entries(baseline.breakdown).map(([category, value]) => {
-            const Icon = categoryIcons[category];
+            const Icon = categoryIcons[category] || Leaf;
             const color = categoryColors[category];
             const refinedValue = refined ? refined.breakdown[category] : null;
             
@@ -241,7 +244,10 @@ const Dashboard = ({ data }) => {
                     <p className="text-sm text-gray-600">
                       {baseline.details[category] && Object.keys(baseline.details[category]).length > 0
                         ? Object.entries(baseline.details[category])
-                            .map(([key, val]) => `${key}: ${val.toFixed(1)} kg CO₂`)
+                            .map(([key, val]) => {
+                              const isNumber = typeof val === 'number' && isFinite(val);
+                              return isNumber ? `${key}: ${Math.abs(val).toFixed(1)} kg CO₂` : `${key}: ${String(val)}`;
+                            })
                             .join(', ')
                         : 'No details available'
                       }

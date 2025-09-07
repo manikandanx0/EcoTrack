@@ -62,7 +62,8 @@ class CalculationResponse(BaseModel):
     breakdown: Dict[str, float] = Field(description="CO2 emissions breakdown by category")
     baseline_total: float = Field(description="Total baseline CO2 emissions in kg")
     refined_total: Optional[float] = Field(None, description="Total refined CO2 emissions in kg")
-    details: Dict[str, Dict[str, float]] = Field(description="Detailed breakdown by activity")
+    # Allow details to include strings or numbers (e.g., transport mode)
+    details: Dict[str, Dict[str, Any]] = Field(description="Detailed breakdown by activity")
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 class OffsetRecommendation(BaseModel):
@@ -148,3 +149,7 @@ class SuggestionsResponse(BaseModel):
     """Schema for suggestions response"""
     suggestions: List[SuggestionResponse]
     total_potential_savings: float
+
+class OffsetRequest(BaseModel):
+    """Request body for offset recommendations"""
+    footprint_kg: float = Field(..., ge=0, description="Footprint to offset in kg CO2")
