@@ -1,39 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-
-const Header = () => {
-  const { user, logout } = useAuth();
-  return (
-    <header className="bg-white border-b border-gray-200">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="text-xl font-bold text-gray-900">EcoTrack</Link>
-        <nav className="flex items-center gap-4">
-          {user ? (
-            <>
-              <Link to="/leaderboard" className="text-gray-700 hover:text-gray-900">Leaderboard</Link>
-              <Link to="/profile" className="text-gray-700 hover:text-gray-900">{user.username}</Link>
-              <button onClick={logout} className="btn-secondary">Logout</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="btn-secondary">Login</Link>
-              <Link to="/register" className="btn-primary">Sign Up</Link>
-            </>
-          )}
-        </nav>
-      </div>
-    </header>
-  );
-};
-
-export default Header;
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import EcoTrackLogo from './EcoTrackLogo';
-import { Leaf, BarChart3, Calculator, User, Trophy, LogOut, Menu, X } from 'lucide-react';
+import { Calculator, User, Trophy, LogOut, Menu, X } from 'lucide-react';
 
 const Header = () => {
   const { user, logout } = useAuth();
