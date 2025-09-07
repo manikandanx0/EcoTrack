@@ -129,7 +129,7 @@ async def calculate_footprint(
         energy_details = {}
         
         if payload.electricity_kwh > 0:
-            # Use global average for now (can be enhanced with ElectricityMap API)
+            # Use global average emission factor
             electricity_factor = EMISSION_FACTORS["energy"]["electricity_global_avg"]["value"]
             electricity_emissions = payload.electricity_kwh * electricity_factor
             energy_emissions += electricity_emissions

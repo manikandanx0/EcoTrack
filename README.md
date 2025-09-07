@@ -1,6 +1,6 @@
 # 🌍 EcoTrack - Hybrid Carbon Footprint Tracker
 
-A comprehensive web application that helps users calculate their personal carbon footprint using a hybrid approach: rule-based baseline calculations combined with AI refinements, plus blockchain-based carbon offset recommendations.
+A comprehensive web application that helps users calculate their personal carbon footprint using a hybrid approach: rule-based baseline calculations combined with AI refinements, plus carbon offset recommendations.
 
 ![EcoTrack Logo](https://img.shields.io/badge/EcoTrack-Hybrid%20Carbon%20Tracker-green?style=for-the-badge&logo=leaf)
 
@@ -14,13 +14,13 @@ A comprehensive web application that helps users calculate their personal carbon
 ### 📊 Comprehensive Tracking
 - **Transportation**: Cars, buses, trains, bicycles, walking
 - **Food Consumption**: Meat, dairy, vegetables, fruits with detailed breakdowns
-- **Energy Usage**: Electricity, natural gas with regional grid factors
+- **Energy Usage**: Electricity, natural gas with emission factors
 - **Waste Management**: Landfill vs recycling impact
 - **Consumption**: Clothing, electronics, and general goods
 
 ### 🌱 Carbon Offset Integration
-- **Blockchain-Verified Projects**: Reforestation, renewable energy, energy efficiency
-- **Transparent Pricing**: Real-time cost calculations per ton of CO₂
+- **Verified Projects**: Reforestation, renewable energy, energy efficiency (demo)
+- **Transparent Pricing**: Cost calculations per ton of CO₂
 - **Digital Certificates**: Downloadable certificates for purchased offsets
 - **Impact Tracking**: Detailed project information and environmental benefits
 
@@ -58,11 +58,36 @@ EcoTrack/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.12+
-- Node.js 18+
+- Python 3.8+
+- Node.js 16+
 - npm or yarn
 
-### Backend Setup
+### 🎬 One-Click Demo (Recommended)
+
+**Windows:**
+```bash
+start_demo.bat
+```
+
+**Linux/Mac:**
+```bash
+./start_demo.sh
+```
+
+**Cross-platform:**
+```bash
+python start_demo.py
+```
+
+This will automatically:
+- Install all dependencies
+- Start both backend and frontend servers
+- Open the application in your browser
+- Run a demo calculation
+
+### Manual Setup
+
+#### Backend Setup
 
 1. **Navigate to backend directory**
    ```bash
@@ -83,7 +108,7 @@ EcoTrack/
    - API Documentation: `http://localhost:8000/docs`
    - Health Check: `http://localhost:8000/health`
 
-### Frontend Setup
+#### Frontend Setup
 
 1. **Navigate to frontend directory**
    ```bash
@@ -136,6 +161,13 @@ print(f"Total footprint: {result['baseline_total']:.1f} kg CO₂")
 
 ## 🎯 Demo Flow
 
+### Quick Demo
+Run the demo script to see the application in action:
+```bash
+python demo.py
+```
+
+### Interactive Demo
 1. **Open the application** at `http://localhost:5173`
 2. **Fill out the form** with your daily/weekly activities:
    - Transportation (commute distance and mode)
@@ -149,6 +181,7 @@ print(f"Total footprint: {result['baseline_total']:.1f} kg CO₂")
    - AI-refined calculation with personalized adjustments
    - Detailed breakdown by category
    - Interactive charts and visualizations
+   - Export PDF report functionality
 
 4. **Explore offset options**:
    - Browse verified carbon offset projects
@@ -195,14 +228,14 @@ The hybrid approach combines rule-based calculations with ML refinements:
 
 3. **Transparency**: Shows both calculations for comparison
 
-## 🌐 Blockchain Integration
+## 🌐 Carbon Offset Integration
 
 Carbon offset recommendations include:
 
-- **Verified Projects**: Third-party verified carbon reduction projects
-- **Blockchain Tracking**: Transparent transaction records
+- **Verified Projects**: Mock carbon reduction projects for demonstration
+- **Transparent Tracking**: Simulated transaction records
 - **Digital Certificates**: Downloadable proof of environmental impact
-- **Real-time Pricing**: Dynamic cost calculations
+- **Cost Calculations**: Dynamic pricing based on footprint size
 
 ## 🛠️ Development
 
@@ -255,10 +288,6 @@ Carbon offset recommendations include:
 Create a `.env` file in the backend directory:
 
 ```env
-# API Keys (optional for enhanced features)
-ELECTRICITYMAP_KEY=your_electricitymap_key
-TOUCAN_API_KEY=your_toucan_api_key
-
 # Database
 DATABASE_URL=sqlite:///./app.db
 
@@ -289,7 +318,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Emission Factors**: DEFRA, EPA, IPCC, Our World in Data
 - **UI Components**: React, Tailwind CSS, Recharts
 - **Backend**: FastAPI, SQLAlchemy, Pydantic
-- **Blockchain**: Toucan Protocol (mock integration)
+- **Carbon Offsets**: Mock integration for demonstration
 
 ## 📞 Support
 
@@ -300,4 +329,4 @@ For questions or support:
 
 ---
 
-**EcoTrack** - Making sustainability measurable and actionable through hybrid carbon footprint tracking and blockchain-verified offsets.
+**EcoTrack** - Making sustainability measurable and actionable through hybrid carbon footprint tracking and carbon offset recommendations.

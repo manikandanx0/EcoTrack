@@ -2,6 +2,7 @@
 """
 Demo script for EcoTrack - Hybrid Carbon Footprint Tracker
 This script demonstrates the API functionality with sample data
+No external API keys required - uses mock data for demonstration
 """
 
 import requests
