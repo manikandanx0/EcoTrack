@@ -7,3 +7,4 @@ def read_root():
     return {"message": "Hello, world!"}
 
 
+# Comment and document
