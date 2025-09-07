@@ -35,11 +35,15 @@ const AppContent = () => {
   const [footprintData, setFootprintData] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const { token } = useAuth();
+
   const handleCalculate = async (formData) => {
     setLoading(true);
     try {
       // Calculate baseline footprint
-      const response = await axios.post('http://localhost:8000/api/calc', formData);
+      const response = await axios.post('http://localhost:8000/api/calc', formData, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       const baselineData = response.data;
 
       setFootprintData({

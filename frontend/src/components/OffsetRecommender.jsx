@@ -126,6 +126,13 @@ const OffsetRecommender = ({ footprint }) => {
     );
   }
 
+  const INR_PER_USD = 83; // static conversion; replace with live FX if needed
+
+  const formatINR = (amountInUsd) => {
+    const inr = amountInUsd * INR_PER_USD;
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(inr);
+  };
+
   return (
     <div className="card">
       <div className="flex items-center mb-6">
@@ -158,10 +165,10 @@ const OffsetRecommender = ({ footprint }) => {
               </div>
               <div className="text-right">
                 <div className="text-2xl font-bold text-gray-900">
-                  ${project.total_cost.toFixed(2)}
+                  {formatINR(project.total_cost)}
                 </div>
                 <div className="text-sm text-gray-600">
-                  ${project.cost_per_ton}/ton CO₂
+                  {formatINR(project.cost_per_ton)} / ton CO₂
                 </div>
               </div>
             </div>

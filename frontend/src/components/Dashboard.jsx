@@ -48,81 +48,105 @@ const Dashboard = ({ data }) => {
   const improvement = totalRefined ? ((totalBaseline - totalRefined) / totalBaseline * 100) : 0;
 
   const exportToPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    
-    // Title
-    doc.setFontSize(20);
+
+    // Header band
+    doc.setFillColor(22, 163, 74); // eco green
+    doc.rect(0, 0, pageWidth, 70, 'F');
+    doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
-    doc.text('Carbon Footprint Report', pageWidth / 2, 30, { align: 'center' });
-    
-    // Date
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, pageWidth / 2, 40, { align: 'center' });
-    
-    // Summary
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Summary', 20, 60);
-    
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Baseline Footprint: ${totalBaseline.toFixed(1)} kg CO₂`, 20, 75);
-    
-    if (totalRefined) {
-      doc.text(`AI Refined Footprint: ${totalRefined.toFixed(1)} kg CO₂`, 20, 85);
-      doc.text(`Improvement: ${improvement.toFixed(1)}% reduction`, 20, 95);
-    }
-    
-    // Breakdown
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Emissions Breakdown', 20, 115);
-    
-    let yPos = 130;
-    Object.entries(baseline.breakdown).forEach(([category, value]) => {
-      const percentage = (Math.abs(value) / totalBaseline) * 100;
+    doc.setFontSize(22);
+    doc.text('EcoTrack — Carbon Footprint Report', 40, 42);
+    doc.setFontSize(11);
+    doc.text(`Generated on ${new Date().toLocaleString()}`, 40, 58);
+
+    // Reset text color
+    doc.setTextColor(0, 0, 0);
+
+    let y = 95;
+
+    // Summary cards
+    const card = (x, title, value, subtitle, color) => {
+      doc.setDrawColor(229, 231, 235);
+      doc.setFillColor(249, 250, 251);
+      doc.roundedRect(x, y, 180, 90, 8, 8, 'FD');
       doc.setFontSize(12);
+      doc.setTextColor(75, 85, 99);
+      doc.text(title, x + 14, y + 24);
+      doc.setTextColor(color[0], color[1], color[2]);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(24);
+      doc.text(value, x + 14, y + 56);
+      doc.setTextColor(107, 114, 128);
       doc.setFont('helvetica', 'normal');
-      doc.text(`${category.charAt(0).toUpperCase() + category.slice(1)}: ${Math.abs(value).toFixed(1)} kg CO₂ (${percentage.toFixed(1)}%)`, 20, yPos);
-      yPos += 10;
-    });
-    
-    // Recommendations
-    if (yPos > 250) {
-      doc.addPage();
-      yPos = 30;
+      doc.setFontSize(11);
+      doc.text(subtitle, x + 14, y + 76);
+      doc.setTextColor(0, 0, 0);
+    };
+
+    card(40, 'Baseline Footprint', `${totalBaseline.toFixed(1)} kg CO₂`, 'Total emissions', [16, 163, 74]);
+    if (totalRefined) {
+      card(240, 'AI Refined', `${totalRefined.toFixed(1)} kg CO₂`, 'Model-adjusted', [59, 130, 246]);
+      card(440, 'Improvement', `${improvement.toFixed(1)}%`, 'Reduction vs baseline', [34, 197, 94]);
     }
-    
-    doc.setFontSize(16);
+
+    y += 120;
+
+    // Breakdown section
     doc.setFont('helvetica', 'bold');
-    doc.text('Recommendations', 20, yPos);
-    
-    yPos += 15;
-    doc.setFontSize(12);
+    doc.setFontSize(16);
+    doc.text('Emissions Breakdown', 40, y);
+    y += 18;
+
     doc.setFont('helvetica', 'normal');
-    
+    doc.setFontSize(12);
+    const lineHeight = 18;
     Object.entries(baseline.breakdown).forEach(([category, value]) => {
-      const percentage = (Math.abs(value) / totalBaseline) * 100;
-      if (percentage > 20) {
-        doc.text(`• Consider reducing ${category} consumption (${percentage.toFixed(1)}% of footprint)`, 20, yPos);
-        yPos += 10;
+      const pct = (Math.abs(value) / totalBaseline) * 100;
+      const text = `${category.charAt(0).toUpperCase() + category.slice(1)} — ${Math.abs(value).toFixed(1)} kg CO₂ (${pct.toFixed(1)}%)`;
+      doc.text(text, 48, y);
+      // bar visualization
+      const barWidth = Math.min(400, (pct / 100) * 400);
+      doc.setFillColor(16, 185, 129);
+      doc.roundedRect(350, y - 10, barWidth, 8, 3, 3, 'F');
+      y += lineHeight;
+      if (y > pageHeight - 100) {
+        doc.addPage();
+        y = 60;
       }
     });
-    
-    if (totalRefined && improvement > 0) {
-      doc.text(`• AI refinement improved accuracy by ${improvement.toFixed(1)}%`, 20, yPos);
+
+    // Recommendations section
+    if (y > pageHeight - 160) {
+      doc.addPage();
+      y = 60;
     }
-    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('Recommendations', 40, y);
+    y += 16;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    Object.entries(baseline.breakdown).forEach(([category, value]) => {
+      const pct = (Math.abs(value) / totalBaseline) * 100;
+      if (pct > 20) {
+        doc.text(`• Focus on reducing ${category} (currently ${pct.toFixed(1)}% of footprint)`, 48, y);
+        y += 16;
+      }
+    });
+    if (totalRefined && improvement !== 0) {
+      const msg = improvement > 0 ? 'reduction' : 'increase';
+      doc.text(`• AI refinement indicates a ${Math.abs(improvement).toFixed(1)}% ${msg}`, 48, y);
+      y += 16;
+    }
+
     // Footer
-    const footerY = pageHeight - 20;
     doc.setFontSize(10);
-    doc.setFont('helvetica', 'italic');
-    doc.text('Generated by EcoTrack - Hybrid Carbon Footprint Tracker', pageWidth / 2, footerY, { align: 'center' });
-    
-    // Save the PDF
+    doc.setTextColor(107, 114, 128);
+    doc.text('EcoTrack — Hybrid Carbon Footprint Tracker', pageWidth / 2, pageHeight - 24, { align: 'center' });
+
     doc.save('carbon-footprint-report.pdf');
   };
 

@@ -65,6 +65,3 @@ npm run dev
 
 ## License
 MIT
-
-
-Thank you
