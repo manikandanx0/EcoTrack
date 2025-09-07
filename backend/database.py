@@ -8,7 +8,7 @@ from models import Base
 import os
 
 # Database URL
-DATABASE_URL = "sqlite:///./app.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./ecotrack.db")
 
 # Create engine
 engine = create_engine(

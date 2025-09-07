@@ -6,6 +6,24 @@ A comprehensive web application that helps users calculate their personal carbon
 
 ## ✨ Features
 
+### 🔐 User Authentication & Profiles
+- **Secure Login/Registration**: JWT-based authentication system
+- **User Profiles**: Personal dashboards with progress tracking
+- **Goal Setting**: Set and track monthly carbon reduction goals
+- **Achievement Badges**: Earn badges for milestones and streaks
+- **Social Sharing**: Share your progress and encourage others
+
+### 👥 Community Features
+- **Leaderboard**: Opt-in community ranking by CO₂ reduction
+- **Privacy-First**: Only usernames shown, personal data remains private
+- **Community Impact**: See total community carbon savings
+
+### 💡 Personalized Recommendations
+- **AI-Powered Tips**: Personalized carbon reduction suggestions
+- **Impact-Based**: Tips prioritized by potential CO₂ savings
+- **Category-Specific**: Targeted advice for transport, food, energy, waste
+- **Actionable Insights**: Clear, implementable recommendations
+
 ### 🔬 Hybrid Calculation Engine
 - **Rule-based Baseline**: Uses official emission factors from DEFRA, EPA, and IPCC
 - **AI Refinement**: Machine learning models to personalize and improve accuracy
@@ -24,10 +42,11 @@ A comprehensive web application that helps users calculate their personal carbon
 - **Digital Certificates**: Downloadable certificates for purchased offsets
 - **Impact Tracking**: Detailed project information and environmental benefits
 
-### 📈 Advanced Analytics
+### 📈 Advanced Analytics & UX
 - **Interactive Dashboards**: Pie charts, bar charts, and trend analysis
-- **Detailed Breakdowns**: Category-wise emissions with insights
-- **Recommendations**: Personalized suggestions for reducing footprint
+- **Multi-Step Forms**: Guided input with validation and progress tracking
+- **Real-time Validation**: Form validation with helpful error messages
+- **Responsive Design**: Works perfectly on desktop and mobile
 - **Export Options**: PDF reports and data export capabilities
 
 ## 🏗️ Architecture
@@ -87,6 +106,20 @@ This will automatically:
 
 ### Manual Setup
 
+#### Environment Configuration
+
+1. **Copy environment template**
+   ```bash
+   cp env.example .env
+   ```
+
+2. **Update environment variables** (optional for development)
+   ```bash
+   # Edit .env file with your preferred settings
+   JWT_SECRET=your-secret-key-change-this-in-production-32-chars-min
+   DATABASE_URL=sqlite:///./ecotrack.db
+   ```
+
 #### Backend Setup
 
 1. **Navigate to backend directory**
@@ -127,23 +160,76 @@ This will automatically:
 
    The application will be available at `http://localhost:5173`
 
+## 🚀 Getting Started
+
+### Quick Start (Windows)
+```bash
+# Run the automated setup script
+start_demo.bat
+```
+
+### Manual Setup
+1. **Backend**: `cd backend && pip install -r requirements.txt && uvicorn main:app --reload --port 8000`
+2. **Frontend**: `cd frontend && npm install && npm run dev`
+3. **Test Setup**: `python test_setup.py`
+4. **Test API**: `python test_api.py` (after starting backend)
+
+### User Flow
+1. **Register an Account**: Create your account with email and password
+2. **Calculate Your Footprint**: Use the multi-step form to input your lifestyle data
+3. **View Your Results**: See your carbon footprint breakdown and personalized tips
+4. **Set Goals**: Set monthly carbon reduction goals in your profile
+5. **Join the Community**: Opt-in to the leaderboard to see how you compare
+6. **Track Progress**: Monitor your improvements over time
+
+📖 **Detailed Setup Guide**: See [STARTUP_GUIDE.md](STARTUP_GUIDE.md) for comprehensive instructions
+
 ## 📖 API Endpoints
 
-### Core Endpoints
+### Authentication Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/calc` | POST | Calculate baseline carbon footprint |
-| `/api/refine` | POST | Refine calculation with AI |
-| `/api/offset` | POST | Get carbon offset recommendations |
-| `/api/entries` | GET | Get user's footprint history |
+| Endpoint | Method | Description | Auth Required |
+|----------|--------|-------------|---------------|
+| `/auth/register` | POST | Register new user | No |
+| `/auth/login` | POST | Login user | No |
+| `/auth/me` | GET | Get current user info | Yes |
+
+### Core Calculation Endpoints
+
+| Endpoint | Method | Description | Auth Required |
+|----------|--------|-------------|---------------|
+| `/api/calc` | POST | Calculate baseline carbon footprint | Yes |
+| `/api/refine` | POST | Refine calculation with AI | Yes |
+| `/api/offset` | POST | Get carbon offset recommendations | Yes |
+| `/api/entries` | GET | Get user's footprint history | Yes |
+
+### Community & Features Endpoints
+
+| Endpoint | Method | Description | Auth Required |
+|----------|--------|-------------|---------------|
+| `/api/leaderboard` | GET | Get community leaderboard | No |
+| `/api/suggest` | POST | Get personalized suggestions | Yes |
+| `/api/user/preferences` | PATCH | Update user preferences | Yes |
 
 ### Example API Usage
 
 ```python
 import requests
 
-# Calculate baseline footprint
+# Register a new user
+register_data = {
+    "email": "user@example.com",
+    "password": "securepassword123",
+    "username": "ecouser",
+    "name": "Eco User"
+}
+
+response = requests.post("http://localhost:8000/auth/register", json=register_data)
+auth_data = response.json()
+token = auth_data["access_token"]
+
+# Calculate baseline footprint (with authentication)
+headers = {"Authorization": f"Bearer {token}"}
 payload = {
     "commute_km": 20,
     "transport_mode": "car_petrol",
@@ -153,10 +239,19 @@ payload = {
     "recycled_kg": 3
 }
 
-response = requests.post("http://localhost:8000/api/calc", json=payload)
+response = requests.post("http://localhost:8000/api/calc", json=payload, headers=headers)
 result = response.json()
 
 print(f"Total footprint: {result['baseline_total']:.1f} kg CO₂")
+
+# Get personalized suggestions
+suggestions_response = requests.post(
+    "http://localhost:8000/api/suggest", 
+    json={"breakdown": result["breakdown"]}, 
+    headers=headers
+)
+suggestions = suggestions_response.json()
+print(f"Found {len(suggestions['suggestions'])} personalized tips!")
 ```
 
 ## 🎯 Demo Flow

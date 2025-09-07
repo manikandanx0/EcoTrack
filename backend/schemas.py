@@ -2,8 +2,8 @@
 Pydantic schemas for API requests and responses
 """
 
-from pydantic import BaseModel, Field
-from typing import Dict, List, Optional
+from pydantic import BaseModel, Field, validator
+from typing import Dict, List, Optional, Any
 from datetime import datetime
 
 class InputPayload(BaseModel):
@@ -38,6 +38,23 @@ class InputPayload(BaseModel):
     house_size: Optional[float] = Field(None, ge=0, description="House size in square meters")
     occupants: Optional[int] = Field(None, ge=1, description="Number of occupants")
     ac_hours: Optional[float] = Field(None, ge=0, le=24, description="Daily AC usage hours")
+    
+    @validator("commute_km", "electricity_kwh", "beef_kg", "waste_kg")
+    def check_non_negative(cls, v):
+        if v < 0:
+            raise ValueError("Value cannot be negative")
+        return v
+    
+    @validator("transport_mode")
+    def check_transport_mode(cls, v):
+        valid_modes = [
+            "car_petrol", "car_diesel", "car_hybrid", "car_ev",
+            "bus_diesel", "bus_electric", "train_diesel", "train_electric",
+            "motorcycle", "bicycle", "walking", "airplane_shorthaul", "airplane_longhaul"
+        ]
+        if v not in valid_modes:
+            raise ValueError(f"Invalid transport mode. Must be one of: {', '.join(valid_modes)}")
+        return v
 
 class CalculationResponse(BaseModel):
     """Response for carbon footprint calculation"""
@@ -73,13 +90,61 @@ class EntryResponse(BaseModel):
     date: datetime
     baseline_total: float
     refined_total: Optional[float]
-    activities: List[Dict[str, any]]
+    activities: List[Dict[str, Any]]
 
 class UserResponse(BaseModel):
     """Response for user data"""
     
-    id: int
+    id: str
     name: str
     email: Optional[str]
+    username: str
     created_at: datetime
+    total_reduced_co2: float
+    streak_days: int
+    leaderboard_opt_in: bool
+    monthly_goal: Optional[float]
     entries: List[EntryResponse] = []
+
+# Authentication schemas
+class UserCreate(BaseModel):
+    """Schema for user registration"""
+    email: str = Field(..., description="User email")
+    password: str = Field(..., min_length=8, description="User password")
+    username: str = Field(..., min_length=3, max_length=50, description="Username")
+    name: str = Field(..., min_length=2, max_length=100, description="Full name")
+
+class UserLogin(BaseModel):
+    """Schema for user login"""
+    email: str = Field(..., description="User email")
+    password: str = Field(..., description="User password")
+
+class TokenResponse(BaseModel):
+    """Response for authentication token"""
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
+
+# Leaderboard schemas
+class LeaderboardEntry(BaseModel):
+    """Schema for leaderboard entry"""
+    rank: int
+    username: str
+    score: float  # total_reduced_co2 or streak_days
+
+# Suggestion schemas
+class SuggestionRequest(BaseModel):
+    """Schema for suggestion request"""
+    breakdown: Dict[str, float]
+
+class SuggestionResponse(BaseModel):
+    """Schema for suggestion response"""
+    category: str
+    tip: str
+    savings: float
+    impact_level: str  # low, medium, high
+
+class SuggestionsResponse(BaseModel):
+    """Schema for suggestions response"""
+    suggestions: List[SuggestionResponse]
+    total_potential_savings: float

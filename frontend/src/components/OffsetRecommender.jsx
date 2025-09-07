@@ -16,7 +16,7 @@ const OffsetRecommender = ({ footprint }) => {
   const fetchRecommendations = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/offset', {
+      const response = await fetch('http://localhost:8000/api/offset', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
