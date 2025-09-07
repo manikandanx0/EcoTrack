@@ -1,0 +1,252 @@
+{
+    "transport": {
+        "car_petrol": {
+            "value": 0.19,
+            "unit": "kgCO2/km",
+            "source": "EPA 2023"
+        },
+        "car_diesel": {
+            "value": 0.18,
+            "unit": "kgCO2/km",
+            "source": "EPA 2023"
+        },
+        "car_hybrid": {
+            "value": 0.12,
+            "unit": "kgCO2/km",
+            "source": "IEA 2025"
+        },
+        "car_ev": { "value": 0.08, "unit": "kgCO2/km", "source": "EPA 2023" },
+        "bus_diesel": {
+            "value": 0.1,
+            "unit": "kgCO2/km",
+            "source": "IPCC AR6"
+        },
+        "bus_electric": {
+            "value": 0.05,
+            "unit": "kgCO2/km",
+            "source": "IEA 2025"
+        },
+        "train_diesel": {
+            "value": 0.04,
+            "unit": "kgCO2/km",
+            "source": "IPCC AR6"
+        },
+        "train_electric": {
+            "value": 0.02,
+            "unit": "kgCO2/km",
+            "source": "IEA 2025"
+        },
+        "motorcycle": {
+            "value": 0.11,
+            "unit": "kgCO2/km",
+            "source": "EPA 2023"
+        },
+        "bicycle": { "value": 0.0, "unit": "kgCO2/km", "source": "IPCC AR6" },
+        "walking": { "value": 0.0, "unit": "kgCO2/km", "source": "IPCC AR6" },
+        "airplane_shorthaul": {
+            "value": 0.25,
+            "unit": "kgCO2/km",
+            "source": "IPCC AR6"
+        },
+        "airplane_longhaul": {
+            "value": 0.15,
+            "unit": "kgCO2/km",
+            "source": "IPCC AR6"
+        }
+    },
+    "food": {
+        "beef": {
+            "value": 60.0,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "lamb": {
+            "value": 24.0,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "pork": {
+            "value": 7.6,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "chicken": {
+            "value": 5.7,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "fish": {
+            "value": 5.0,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "milk": {
+            "value": 3.0,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "cheese": {
+            "value": 21.0,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "butter": {
+            "value": 12.0,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "eggs": {
+            "value": 4.5,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "rice": {
+            "value": 4.0,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "wheat": {
+            "value": 1.4,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "potatoes": {
+            "value": 0.5,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "vegetables": {
+            "value": 0.4,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "fruits": {
+            "value": 0.8,
+            "unit": "kgCO2/kg",
+            "source": "Poore and Nemecek 2018 via Our World in Data"
+        },
+        "vegetarian_meal": {
+            "value": 1.5,
+            "unit": "kgCO2/kg",
+            "source": "FAO 2025 via Poore and Nemecek"
+        },
+        "vegan_meal": {
+            "value": 1.2,
+            "unit": "kgCO2/kg",
+            "source": "FAO 2025 via Poore and Nemecek"
+        }
+    },
+    "energy": {
+        "electricity_global_avg": {
+            "value": 0.45,
+            "unit": "kgCO2/kWh",
+            "source": "IEA Electricity 2025"
+        },
+        "electricity_india": {
+            "value": 0.7,
+            "unit": "kgCO2/kWh",
+            "source": "IEA 2025"
+        },
+        "electricity_us": {
+            "value": 0.4,
+            "unit": "kgCO2/kWh",
+            "source": "EPA GHG Emission Factors Hub 2025"
+        },
+        "electricity_eu": {
+            "value": 0.3,
+            "unit": "kgCO2/kWh",
+            "source": "EEA 2025"
+        },
+        "natural_gas": {
+            "value": 0.4,
+            "unit": "kgCO2/kWh",
+            "source": "IPCC AR6"
+        },
+        "lpg": { "value": 3.0, "unit": "kgCO2/kg", "source": "EPA 2025" },
+        "coal": { "value": 0.9, "unit": "kgCO2/kWh", "source": "IEA 2025" },
+        "heating_oil": {
+            "value": 3.0,
+            "unit": "kgCO2/liter",
+            "source": "EPA 2025"
+        }
+    },
+    "housing": {
+        "heating_cooling": {
+            "value": 20.0,
+            "unit": "kgCO2/m2/year",
+            "source": "IPCC AR6 Chapter 9"
+        },
+        "cement": { "value": 0.7, "unit": "kgCO2/kg", "source": "IPCC AR6" },
+        "steel": { "value": 2.0, "unit": "kgCO2/kg", "source": "IPCC AR6" },
+        "bricks": { "value": 0.2, "unit": "kgCO2/kg", "source": "IPCC AR6" }
+    },
+    "waste": {
+        "plastic": {
+            "value": 1.5,
+            "unit": "kgCO2/kg",
+            "source": "EPA GHG Emission Factors Hub 2025"
+        },
+        "paper": {
+            "value": 0.9,
+            "unit": "kgCO2/kg",
+            "source": "EPA GHG Emission Factors Hub 2025"
+        },
+        "food_waste": {
+            "value": 1.0,
+            "unit": "kgCO2/kg",
+            "source": "EPA 2025 Landfilled Food Waste Report"
+        },
+        "municipal_waste": {
+            "value": 0.7,
+            "unit": "kgCO2/kg",
+            "source": "EPA WARM 2025"
+        },
+        "water_use": {
+            "value": 0.0,
+            "unit": "kgCO2/liter",
+            "source": "IPCC AR6 (negligible direct, varies by energy source)"
+        }
+    },
+    "consumption": {
+        "clothing": {
+            "value": 20.0,
+            "unit": "kgCO2/kg",
+            "source": "Ellen MacArthur Foundation 2025"
+        },
+        "tshirt_cotton": {
+            "value": 8.0,
+            "unit": "kgCO2/item",
+            "source": "WRAP 2025"
+        },
+        "electronics_smartphone": {
+            "value": 70.0,
+            "unit": "kgCO2/item",
+            "source": "Center for Sustainable Systems 2022 (updated)"
+        },
+        "electronics_laptop": {
+            "value": 300.0,
+            "unit": "kgCO2/item",
+            "source": "Center for Sustainable Systems 2022 (updated)"
+        },
+        "electronics_tv": {
+            "value": 200.0,
+            "unit": "kgCO2/item",
+            "source": "Center for Sustainable Systems 2022 (updated)"
+        },
+        "furniture_wood": {
+            "value": 1.0,
+            "unit": "kgCO2/kg",
+            "source": "IPCC AR6"
+        },
+        "furniture_metal": {
+            "value": 2.0,
+            "unit": "kgCO2/kg",
+            "source": "IPCC AR6"
+        },
+        "general_goods": {
+            "value": 0.5,
+            "unit": "kgCO2/dollar",
+            "source": "Our World in Data 2025"
+        }
+    }
+}
