@@ -323,6 +323,65 @@ const InputForm = ({ onSubmit, loading }) => {
         </div>
       </div>
 
+      {/* ML Features Section */}
+      <div className="card bg-blue-50 border-blue-200">
+        <div className="flex items-center mb-4">
+          <div className="w-5 h-5 text-blue-600 mr-2">🤖</div>
+          <h3 className="text-lg font-semibold text-gray-900">AI Enhancement Features (Optional)</h3>
+        </div>
+        <p className="text-sm text-blue-700 mb-4">
+          Provide these details for more accurate AI-powered calculations and personalized insights.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              House Size (m²)
+            </label>
+            <input
+              type="number"
+              name="house_size"
+              value={formData.house_size || ''}
+              onChange={handleInputChange}
+              className="input-field"
+              min="0"
+              step="1"
+              placeholder="e.g., 120"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Number of Occupants
+            </label>
+            <input
+              type="number"
+              name="occupants"
+              value={formData.occupants || ''}
+              onChange={handleInputChange}
+              className="input-field"
+              min="1"
+              step="1"
+              placeholder="e.g., 3"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Daily AC Hours
+            </label>
+            <input
+              type="number"
+              name="ac_hours"
+              value={formData.ac_hours || ''}
+              onChange={handleInputChange}
+              className="input-field"
+              min="0"
+              max="24"
+              step="0.5"
+              placeholder="e.g., 6"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Submit Button */}
       <div className="text-center">
         <button

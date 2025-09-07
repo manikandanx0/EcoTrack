@@ -264,7 +264,26 @@ const Dashboard = ({ data }) => {
         </div>
       </div>
 
-      {/* Insights */}
+      {/* ML Insights */}
+      {refined && refined.details && refined.details.ml_insights && (
+        <div className="card bg-blue-50 border-blue-200">
+          <div className="flex items-center mb-4">
+            <div className="w-6 h-6 text-blue-600 mr-2">🤖</div>
+            <h3 className="text-lg font-semibold text-gray-900">AI Insights</h3>
+          </div>
+          <div className="space-y-3">
+            {refined.details.ml_insights.map((insight, index) => (
+              <div key={index} className="p-3 bg-white border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>AI Analysis:</strong> {insight}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Insights & Recommendations */}
       <div className="card">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Insights & Recommendations</h3>
         <div className="space-y-3">
@@ -288,6 +307,15 @@ const Dashboard = ({ data }) => {
               <p className="text-sm text-green-800">
                 <strong>Great news!</strong> Our AI model refined your footprint by {improvement.toFixed(1)}%, 
                 providing a more accurate assessment based on your specific circumstances.
+              </p>
+            </div>
+          )}
+
+          {totalRefined && improvement < 0 && (
+            <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+              <p className="text-sm text-orange-800">
+                <strong>AI Adjustment:</strong> Our model adjusted your footprint by {Math.abs(improvement).toFixed(1)}% 
+                based on your specific circumstances and patterns.
               </p>
             </div>
           )}

@@ -47,9 +47,9 @@ def calculate_sample_footprint():
         "recycled_kg": 3,  # 3 kg recycled per week
         "clothing_kg": 0.5,  # 0.5 kg clothing per month
         "electronics_items": 0,  # No electronics this month
-        "house_size": 120,  # 120 m² house
-        "occupants": 3,  # 3 occupants
-        "ac_hours": 6  # 6 hours AC per day
+        "house_size": 120,  # 120 m² house (for ML prediction)
+        "occupants": 3,  # 3 occupants (for ML prediction)
+        "ac_hours": 6  # 6 hours AC per day (for ML prediction)
     }
     
     try:
@@ -79,6 +79,12 @@ def calculate_sample_footprint():
                 improvement = ((baseline_result['baseline_total'] - refined_result['refined_total']) / 
                              baseline_result['baseline_total'] * 100)
                 print(f"   Improvement: {improvement:.1f}% reduction")
+                
+                # Show ML insights if available
+                if 'ml_insights' in refined_result.get('details', {}):
+                    print("\n🤖 AI Insights:")
+                    for insight in refined_result['details']['ml_insights']:
+                        print(f"   • {insight}")
                 
                 return refined_result['baseline_total']
             else:
